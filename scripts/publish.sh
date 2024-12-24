@@ -62,10 +62,9 @@ publish_dotnet_dependent() {
     dotnet publish --configuration Release \
         --self-contained false \
         -p:PublishSingleFile=true \
+        -p:DebugType=None \
+        -p:DebugSymbols=false \
         -o $outputDir
-
-    echo "clear pdb files"
-    rm -rf $outputDir/*.pdb
 
     echo "zip files..."
     cd $publishDir
@@ -90,10 +89,9 @@ publish_self_contained() {
         --runtime $runtime \
         -p:PublishTrimmed=true \
         -p:PublishSingleFile=true \
+        -p:DebugType=None \
+        -p:DebugSymbols=false \
         -o $outputDir
-
-    echo "clear pdb files"
-    rm -rf $outputDir/*.pdb
 
     echo "zip files..."
     cd $publishDir
@@ -124,7 +122,7 @@ main() {
 
     # self contained
     # https://learn.microsoft.com/zh-cn/dotnet/core/rid-catalog
-    array=("win-x86" "win-x64" "win-arm64" "linux-x64" "linux-musl-x64" "linux-arm64" "linux-arm" "osx-x64")
+    array=("win-x86" "win-x64" "win-arm64" "linux-x64" "linux-musl-x64" "linux-arm64" "linux-arm" "linux-musl-arm64" "osx-x64")
     if [ "$runTime" != "all" ]; then
         array=("$runTime")
     fi
